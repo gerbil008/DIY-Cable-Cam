@@ -1,3 +1,4 @@
+#©PicoCockpit
 from micropython import const
 import struct
 import bluetooth
