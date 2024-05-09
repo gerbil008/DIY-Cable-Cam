@@ -32,13 +32,13 @@ _UART_SERVICE = (
 )
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-i1 = Pin(14, Pin.OUT)
-i2 = Pin(15, Pin.OUT)
+i1 = Pin(6, Pin.OUT)
+i2 = Pin(7, Pin.OUT)
 speed = PWM(Pin(4))
 speed.freq(1000)
 full = 65000
 class BLESimplePeripheral:
-    def __init__(self, ble, name="mpy-uart"):
+    def __init__(self, ble, name="cable_cam"):
         self._ble = ble
         self._ble.active(True)
         self._ble.irq(self._irq)
@@ -85,9 +85,9 @@ def main():
     def pr1():
         speed.duty_u16(round(abs(full*0.1)))
         i1.on()
-        pass
     def pr2():
         i1.off()
+        i2.off()
     def pr3():
         k = 0
         run_motor(100)
@@ -98,17 +98,26 @@ def main():
             time.sleep(0.9)
     def pr4():
         run_motor(100)
+        time.sleep(0.3)
         i1.off()
+        time.sleep(0.3)
         run_motor(100)
+        time.sleep(0.3)
         i1.off()
+        time.sleep(0.3)
         run_motor(100)
     def pr5():
         pass
     def run_motor(pwm_num):
         print(round(abs(full*pwm_num*0.01)))
         speed.duty_u16(round(abs(full*pwm_num*0.01)))
-        i1.on()
-    led_onboard = Pin("LED", Pin.OUT)
+        if pwm_num < 0:
+            i1.on()
+        elif pwm_num > 0:
+            i2.on()
+        elif pwm_num == 0:
+            i2.off()
+            i1.off()
     ble = bluetooth.BLE()
     p = BLESimplePeripheral(ble)
     def on_rx(v):
@@ -120,6 +129,8 @@ def main():
             pr2()
         elif v == "prs3":
             pr3()
+        elif v == "prs4":
+            prs4()
         else:
             try:
                 run_motor(int(v))
@@ -132,3 +143,4 @@ def main():
         
 if __name__ == "__main__":
     main()
+
