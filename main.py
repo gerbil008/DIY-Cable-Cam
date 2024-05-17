@@ -32,11 +32,15 @@ _UART_SERVICE = (
 )
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-i1 = Pin(6, Pin.OUT)
-i2 = Pin(7, Pin.OUT)
-speed = PWM(Pin(4))
+i1 = Pin(16, Pin.OUT)
+i2 = Pin(17, Pin.OUT)
+speed = PWM(Pin(18))
 speed.freq(1000)
 full = 65000
+led1 = Pin(5, Pin.OUT)
+led2 = Pin(12, Pin.OUT)
+led = Pin("LED", Pin.OUT)
+led.on()
 class BLESimplePeripheral:
     def __init__(self, ble, name="cable_cam"):
         self._ble = ble
@@ -52,12 +56,14 @@ class BLESimplePeripheral:
         if event == _IRQ_CENTRAL_CONNECT:
             conn_handle, _, _ = data
             print("New connection", conn_handle)
+            led1.on()
             self._connections.add(conn_handle)
         elif event == _IRQ_CENTRAL_DISCONNECT:
             conn_handle, _, _ = data
             print("Disconnected", conn_handle)
             i1.off()
             i2.off()
+            led1.off()
             self._connections.remove(conn_handle)
             self._advertise()
         elif event == _IRQ_GATTS_WRITE:
@@ -83,11 +89,11 @@ class BLESimplePeripheral:
 
 def main():
     def pr1():
-        speed.duty_u16(round(abs(full*0.1)))
-        i1.on()
-    def pr2():
+        run_motor(100)
+    def stop():
         i1.off()
         i2.off()
+        led2.off()
     def pr3():
         k = 0
         run_motor(100)
@@ -99,25 +105,29 @@ def main():
     def pr4():
         run_motor(100)
         time.sleep(0.3)
-        i1.off()
+        stop()
         time.sleep(0.3)
         run_motor(100)
         time.sleep(0.3)
-        i1.off()
+        stop()
         time.sleep(0.3)
         run_motor(100)
     def pr5():
         pass
     def run_motor(pwm_num):
+        led2.on()
         print(round(abs(full*pwm_num*0.01)))
         speed.duty_u16(round(abs(full*pwm_num*0.01)))
         if pwm_num < 0:
             i1.on()
+            i2.off()
         elif pwm_num > 0:
             i2.on()
+            i1.off()
         elif pwm_num == 0:
             i2.off()
             i1.off()
+            led2.off()
     ble = bluetooth.BLE()
     p = BLESimplePeripheral(ble)
     def on_rx(v):
@@ -125,8 +135,8 @@ def main():
         print(v)
         if v == "prs1":
             pr1()
-        elif v == "prs2":
-            pr2()
+        elif v == "stop":
+            stop()
         elif v == "prs3":
             pr3()
         elif v == "prs4":
