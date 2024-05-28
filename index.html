@@ -1,0 +1,87 @@
+<!doctype html><html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="data:">
+<title>Felix_sein_Ding</title>
+<style text="text/css">
+.slider {
+  -webkit-appearance: none;
+  height: 30px;
+  border-radius: 5px;  
+  background: #1f1f1f;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-top: 33vh;
+  padding-left: 200px;
+  padding-right: 200px;
+  flex: 1;
+}
+
+.slidercontainer {
+display: flex;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #d39b00;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #aa9104;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+    <div class="slidecontainer">
+      <input type="range" min=-99  max=99 value=0 class="slider" id="myRange">
+      <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        const slider = document.getElementById('myRange');
+        function sendSliderValue() {
+            const value = slider.value;
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/?value=${value}`, true);
+            xhr.send();}
+        setInterval(sendSliderValue,350);});
+       </script>
+    </div>   
+        <div>
+         <script>
+             function stop(){
+                 const xhr = new XMLHttpRequest();
+                 xhr.open('GET', `/stop`, true);
+                 xhr.send();}
+          </script>       
+         <button onclick=stop()>Stop</button>
+    </div>  
+    <div>
+         <script>
+             function hold(){
+                 const xhr = new XMLHttpRequest();
+                 xhr.open('GET', `/hold`, true);
+                 xhr.send();}
+          </script>       
+         <button onclick=hold()>Hold</button>
+    </div>  
+    <div>
+         <script>
+             function full(){
+                 const xhr = new XMLHttpRequest();
+                 xhr.open('GET', `/stop`, true);
+                 xhr.send();}
+          </script>       
+         <button onclick=full()>Full</button>
+    </div>  
+</body>
+</html>
