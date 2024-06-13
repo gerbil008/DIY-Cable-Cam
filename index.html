@@ -1,26 +1,85 @@
-<!doctype html><html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="data:">
-<title>Felix_sein_Ding</title>
+<title>Cable Cam Control</title>
 <style text="text/css">
+
+.space {
+  margin-top: 33vh;
+}
+.halfspace {
+  margin-top: 16.5vh;
+}
+.quarterspace {
+  margin-top: 8.25vh;
+}
+body {
+  background-color: rgb(29, 63, 99);
+  padding-top: 5vh;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5vh;
+}
+.button-container button {
+  margin-right: 12px;
+}
+.stop-btn,
+.hold-btn,
+.full-btn,
+.ease-in-btn,
+.ease-out-btn,
+.ahh-btn {
+  border: solid black 1px;
+  border-radius: 12px;
+  height: 44px;
+  width: 88px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: all .15s;
+}
+.stop-btn {
+  background-color: red;
+}
+.hold-btn {
+  background-color: orange;
+}
+.full-btn {
+  background-color: green;
+}
+.ease-in-btn,
+.ease-out-btn {
+  background-color: lightgrey;
+}
+.ahh-btn {
+  background-color: transparent;
+  border: none;
+  color: transparent;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
 .slider {
   -webkit-appearance: none;
-  height: 30px;
+  height: 4px;
   border-radius: 5px;  
-  background: #1f1f1f;
+  background-image: linear-gradient(90deg, rgb(0, 40, 69), rgb(0, 11, 27), rgb(0, 40, 69));
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
-  margin-top: 33vh;
-  padding-left: 200px;
-  padding-right: 200px;
   flex: 1;
 }
 
-.slidercontainer {
-display: flex;
+.slidecontainer {
+  display: flex;
+  padding-left: 7.5vw;
+  padding-right: 7.5vw;
 }
 
 .slider::-webkit-slider-thumb {
@@ -29,59 +88,256 @@ display: flex;
   width: 25px;
   height: 25px;
   border-radius: 50%; 
-  background: #d39b00;
+  background: #ffffff;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: #aa9104;
+  background: #ffffff;
   cursor: pointer;
+  border-color: white;
+}
+.inputcontainer {
+  display: flex;
+  justify-content: center;
+}
+#numberInput {
+  flex: 1;
+  max-width: 128px;
+  min-width: 44px;
+  border: none;
+  background-color: rgb(0, 34, 69);
+  border-radius: 8px;
+  height: 32px;
+  color: white;
+  transition: all 0.15s;
+}
+#numberInput:focus {
+  transform: scale(1.33);
+  outline: none;
+}
+nav {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 16, 32);
+  padding-bottom: 12px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+nav div {
+  margin-left: 64px;
+  font-style: italic;
+  z-index: 10;
+}
+
+.stop-btn:hover,
+.hold-btn:hover,
+.full-btn:hover,
+.ease-in-btn:hover,
+.ease-out-btn:hover {
+  font-size: 22px;
+  width: 118.8px;
+}
+
+.ahh-btn:hover {
+  background-color: rgb(0, 34, 69);
+  color: white;
+}
+
+.headline-ccc {
+  font-size: 1.75rem;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  animation: opac .25s ease-in-out backwards 2.25s;
+  letter-spacing: -2.25px;
+}
+.container-flex {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.current {
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+@keyframes traffic-hover {
+  0% {transform: scale(1);}
+  50% {transform: scale(1.1);}
+  100% {transform: scale(1);}
+}
+
+@keyframes fadeout {
+  0% {opacity: 1;}
+  100% {z-index: -1; opacity: 0;}
+}
+
+@keyframes fadein {
+  0% {translate: 0 100vh;}
+}
+
+@keyframes loading {
+  0% {width: 0px;}
+  33% {background-color: transparent;}
+  100% {width: 50vw; background-color: black;}
+}
+@keyframes opac {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: black;
+  }
+}
+
+.fixed-boot {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(29, 63, 99);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeout 100ms forwards ease-in-out 1.5s;
+}
+.headline {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 5rem;
+  letter-spacing: -5px;
+  margin-bottom: 3rem;
+}
+.credits div {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  margin-left: 2.5rem;
+  color: rgb(0, 0, 0);
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  text-align: left;
+}
+main {
+  animation: fadein .5s ease-in-out 1.5s forwards;
+}
+
+.loading-bar {
+  height: 24px;
+  border-radius: 12px;
+  border: solid 1px black;
+  animation: loading 1.75s cubic-bezier(.61,.28,.17,.72) 250ms;
+  animation-iteration-count: 3;
+  animation-timing-function: ease-in-out;
+}
+.container-loading {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 25vh;
 }
 </style>
 </head>
 <body>
+  <main>
+    <div class="container-flex">
+      <p class="headline-ccc">Cable Cam Control</p>
+      <div class="current">69</div>
+    </div>
+    <div class="quarterspace"></div>
+    <div class="button-container">
+      <div>
+        <button onclick="stop()" class="stop-btn"><b>Stop</b></button>
+      </div>
+      <div>
+        <button onclick="full()" class="full-btn">Full(+)</button>
+      </div>
+      <div>
+        <button onclick="ofull()" class="full-btn">Full(-)</button>
+      </div>
+    </div>
     <div class="slidecontainer">
-      <input type="range" min=-99  max=99 value=0 class="slider" id="myRange">
-      <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-        const slider = document.getElementById('myRange');
-        function sendSliderValue() {
-            const value = slider.value;
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/?value=${value}`, true);
-            xhr.send();}
-        setInterval(sendSliderValue,350);});
-       </script>
-    </div>   
-        <div>
-         <script>
-             function stop(){
-                 const xhr = new XMLHttpRequest();
-                 xhr.open('GET', `/stop`, true);
-                 xhr.send();}
-          </script>       
-         <button onclick=stop()>Stop</button>
-    </div>  
-    <div>
-         <script>
-             function hold(){
-                 const xhr = new XMLHttpRequest();
-                 xhr.open('GET', `/hold`, true);
-                 xhr.send();}
-          </script>       
-         <button onclick=hold()>Hold</button>
-    </div>  
-    <div>
-         <script>
-             function full(){
-                 const xhr = new XMLHttpRequest();
-                 xhr.open('GET', `/stop`, true);
-                 xhr.send();}
-          </script>       
-         <button onclick=full()>Full</button>
-    </div>  
+      <input type="range" min="-99" max="99" value="0" class="slider" id="myRange">
+    </div>
+    <div class="halfspace"></div>
+  </main>
+  <div class="fixed-boot">
+    <div class="container-for-boot">
+      <div class="headline">Cable Cam Control</div>
+      <div class="credits">
+        <div>UI DESIGN<b> / FELIX NOWAK</b></div>
+        <div>CONTROLLER PROGRAMMING<b> / DAVID OTT</b></div>
+        <div>ELECTRONICAL ENGINEERING<b> / MICHAEL DANISCH</b></div>
+        <div>ELECTRONICAL ENGINEERING<b> / JONATHAN WALLASCH</b></div>
+        <div class="space"></div>
+      </div>
+    </div>
+    <div class="container-loading"><div class="loading-bar"></div></div>
+  </div>
+  <nav>
+    <div><b>CABLE CAM CONTROL</b></div>
+    <div><b>UI DESIGN</b> FELIX NOWAK</div>
+    <div><b>CONTROLLER PROGRAMMING</b> DAVID OTT</div>
+    <div><b>ELECTRONICAL ENGINEERING</b> MICHAEL DANISCH AND JONATHAN WALLASCH</div>
+  </nav>
+  <script>
+    const slider = document.getElementById('myRange');
+    const currentDiv = document.querySelector('.current');
+    
+    function updateCurrentValue() {
+      currentDiv.textContent = slider.value;
+    }
+    
+    slider.addEventListener('input', updateCurrentValue);
+    
+    function stop() {
+      slider.value = 0;
+      updateCurrentValue();
+    }
+    
+    function full() {
+      if(slider.value < 0){
+        alert("Don't change direction so fast");}
+      else{
+          slider.value = 99;
+          updateCurrentValue();}
+    }
+    
+    function ofull() {
+          if(slider.value > 0){
+        alert("Don't change direction so fast");}
+      else{
+          slider.value = -99;
+          updateCurrentValue();}
+    }
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+      updateCurrentValue();
+      let revalue = 0;
+      function sendSliderValue() {
+        const value = slider.value;
+        if (value != revalue) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', `/?value=${value}`, true);
+          xhr.send();
+          revalue = value;
+        }
+      }
+      setInterval(sendSliderValue, 69);
+    });
+  </script>
 </body>
 </html>
+
