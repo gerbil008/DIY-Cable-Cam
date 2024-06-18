@@ -33,7 +33,7 @@ body {
 .full-btn,
 .ease-in-btn,
 .ease-out-btn,
-.ahh-btn {
+.back-btn {
   border: solid black 1px;
   border-radius: 12px;
   height: 44px;
@@ -56,12 +56,8 @@ body {
 .ease-out-btn {
   background-color: lightgrey;
 }
-.ahh-btn {
-  background-color: transparent;
-  border: none;
-  color: transparent;
-  padding-left: 4px;
-  padding-right: 4px;
+.back-btn {
+  background-color: orange;
 }
 
 .slider {
@@ -140,24 +136,16 @@ nav div {
 }
 
 .stop-btn:hover,
-.hold-btn:hover,
 .full-btn:hover,
-.ease-in-btn:hover,
-.ease-out-btn:hover {
-  font-size: 22px;
-  width: 118.8px;
-}
-
-.ahh-btn:hover {
-  background-color: rgb(0, 34, 69);
-  color: white;
+.back-btn:hover {
+  animation: traffic-hover .33s forwards;
 }
 
 .headline-ccc {
   font-size: 1.75rem;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
-  animation: opac .25s ease-in-out backwards 2.25s;
+  animation: opac .25s ease-in-out backwards 2s;
   letter-spacing: -2.25px;
 }
 .container-flex {
@@ -173,7 +161,7 @@ nav div {
 
 @keyframes traffic-hover {
   0% {transform: scale(1);}
-  50% {transform: scale(1.1);}
+  50% {transform: scale(0.98);}
   100% {transform: scale(1);}
 }
 
@@ -201,6 +189,11 @@ nav div {
     color: black;
   }
 }
+@media (max-height: 512px) {
+  nav div {
+    font-size: 8px;
+  }
+}
 
 .fixed-boot {
   position: fixed;
@@ -212,7 +205,7 @@ nav div {
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeout 100ms forwards ease-in-out 1.5s;
+  animation: fadeout 100ms forwards ease-in-out 1.25s;
 }
 .headline {
   font-family: Arial, Helvetica, sans-serif;
@@ -231,14 +224,14 @@ nav div {
   text-align: left;
 }
 main {
-  animation: fadein .5s ease-in-out 1.5s forwards;
+  animation: fadein .5s ease-in-out 1.25s forwards;
 }
 
 .loading-bar {
   height: 24px;
   border-radius: 12px;
   border: solid 1px black;
-  animation: loading 1.75s cubic-bezier(.61,.28,.17,.72) 250ms;
+  animation: loading 1s cubic-bezier(.61,.28,.17,.72) 250ms;
   animation-iteration-count: 3;
   animation-timing-function: ease-in-out;
 }
@@ -259,14 +252,15 @@ main {
     <div class="quarterspace"></div>
     <div class="button-container">
       <div>
+        <button onclick="ofull()" class="back-btn">&#8672; Back</button>
+      </div>
+      <div>
         <button onclick="stop()" class="stop-btn"><b>Stop</b></button>
       </div>
       <div>
-        <button onclick="full()" class="full-btn">Full(+)</button>
+        <button onclick="full()" class="full-btn">Full &#8674;</button>
       </div>
-      <div>
-        <button onclick="ofull()" class="full-btn">Full(-)</button>
-      </div>
+      
     </div>
     <div class="slidecontainer">
       <input type="range" min="-99" max="99" value="0" class="slider" id="myRange">
@@ -300,8 +294,25 @@ main {
       currentDiv.textContent = slider.value;
     }
     
-    slider.addEventListener('input', updateCurrentValue);
     
+      document.addEventListener('keydown', function(event) {
+          if (event.key === 'd') {
+              if(slider.value == -99){
+                  slider.value = Number(slider.value) +4;}
+              else{    
+              slider.value =Number(slider.value) +5;}
+          updateCurrentValue();
+      }
+      });  
+      document.addEventListener('keydown', function(event) {
+          if (event.key === 'a') {
+              if(slider.value == 99){
+                  slider.value = Number(slider.value) -4;}
+              else{    
+              slider.value =Number(slider.value) -5;}
+          updateCurrentValue();
+      }
+      });    
     function stop() {
       slider.value = 0;
       updateCurrentValue();
@@ -323,6 +334,22 @@ main {
           updateCurrentValue();}
     }
     
+      document.addEventListener('keydown', function(event) {
+          if (event.key === 'ArrowLeft') {
+            ofull();
+      }
+      });
+      document.addEventListener('keydown', function(event) {
+          if (event.key === 'ArrowUp') {
+               stop()    
+      }
+      });
+    slider.addEventListener('input', updateCurrentValue);
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowRight') {
+             full()
+      }
+      });
     document.addEventListener('DOMContentLoaded', (event) => {
       updateCurrentValue();
       let revalue = 0;
@@ -332,11 +359,12 @@ main {
           const xhr = new XMLHttpRequest();
           xhr.open('GET', `/?value=${value}`, true);
           xhr.send();
-          revalue = value;}
+          revalue = value;
         }
+      }
       setInterval(sendSliderValue, 69);
     });
   </script>
+
 </body>
 </html>
-
