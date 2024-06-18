@@ -26,7 +26,7 @@ full1 = 65069
 led1 = Pin(23, Pin.OUT)
 led2 = Pin(32, Pin.OUT)
 led3 = Pin(22, Pin.OUT)
-domains = ["cable.cam", "poppe.cock", "felix.aniko", "michael.daniel", "inferno.dildo", "apple.shit", "windows.noob"]
+domains = ["cable.cam", "apple.shit", "windows.noob"]
 
 
 def ip_to_bytes(ip):
