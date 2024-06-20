@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="data:">
+<link rel="icon" type="image/x-icon" href="favicon.png">
 <title>Cable Cam Control</title>
 <style text="text/css">
 
@@ -59,6 +60,12 @@ body {
 .back-btn {
   background-color: orange;
 }
+
+#minusfivebtn,
+#plusfivebtn {
+  background-color: rgba(173, 216, 230, 0.219);
+}
+
 
 .slider {
   -webkit-appearance: none;
@@ -159,6 +166,31 @@ nav div {
   font-weight: bold;
 }
 
+.tltip-con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15vh;
+}
+.tltip-con div {
+  margin-right: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  line-height: 2rem;
+}
+
+#warning {
+  margin-top: 5vh;
+  color: rgb(0, 0, 0);
+  letter-spacing: 2px;
+  font-size: 1.125rem;
+  animation: warning 10ms both 7.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15vh;
+}
+
 @keyframes traffic-hover {
   0% {transform: scale(1);}
   50% {transform: scale(0.98);}
@@ -183,6 +215,12 @@ nav div {
   0% {opacity: 0;}
   100% {opacity: 1;}
 }
+@keyframes warning {
+  /*0% {display: flex;}
+  100% {display: none;}*/
+  0% {opacity: 1;}
+  100% {opacity: 0; display: none;}
+}
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -192,6 +230,9 @@ nav div {
 @media (max-height: 512px) {
   nav div {
     font-size: 8px;
+  }
+  .tltip-con {
+    display: none;
   }
 }
 
@@ -252,6 +293,9 @@ main {
     <div class="quarterspace"></div>
     <div class="button-container">
       <div>
+        <button onclick="gleft()" class="back-btn" id="minusfivebtn">- 5</button>
+      </div>
+      <div>
         <button onclick="ofull()" class="back-btn">&#8672; Back</button>
       </div>
       <div>
@@ -260,11 +304,22 @@ main {
       <div>
         <button onclick="full()" class="full-btn">Full &#8674;</button>
       </div>
+      <div>
+        <button onclick="gright()" class="back-btn" id="plusfivebtn">+ 5</button>
+      </div>
       
     </div>
     <div class="slidecontainer">
       <input type="range" min="-99" max="99" value="0" class="slider" id="myRange">
     </div>
+    <div class="tltip-con">
+      <div class="tltip-con-content"><b>- 5</b> = ArrowLeft</div>
+      <div class="tltip-con-content"><b>Back</b> = b</div>
+      <div class="tltip-con-content"><b>STOP</b> = [spacebar]</div>
+      <div class="tltip-con-content"><b>Full</b> = f</div>
+      <div class="tltip-con-content"><b>+ 5</b> = ArrowRight</div>
+    </div>
+    <div class="tltip-con-media-ineff" id="warning"><b>DO NOT CHANGE DIRECTIONS QUICKLY! IT WILL DAMAGE THE MOTOR!</b></div>
     <div class="halfspace"></div>
   </main>
   <div class="fixed-boot">
@@ -295,8 +350,22 @@ main {
     }
     
     
+    function gleft(){
+          if(slider.value == 99){
+                  slider.value = Number(slider.value) -4;}
+              else{    
+              slider.value =Number(slider.value) -5;}
+          updateCurrentValue();
+      }
+    function gright(){
+          if(slider.value == -99){
+                  slider.value = Number(slider.value) +4;}
+              else{    
+              slider.value =Number(slider.value) +5;}
+          updateCurrentValue();
+      }
       document.addEventListener('keydown', function(event) {
-          if (event.key === 'd') {
+          if (event.key === 'ArrowRight') {
               if(slider.value == -99){
                   slider.value = Number(slider.value) +4;}
               else{    
@@ -305,7 +374,7 @@ main {
       }
       });  
       document.addEventListener('keydown', function(event) {
-          if (event.key === 'a') {
+          if (event.key === 'ArrowLeft') {
               if(slider.value == 99){
                   slider.value = Number(slider.value) -4;}
               else{    
@@ -335,18 +404,18 @@ main {
     }
     
       document.addEventListener('keydown', function(event) {
-          if (event.key === 'ArrowLeft') {
+          if (event.key === 'b') {
             ofull();
       }
       });
       document.addEventListener('keydown', function(event) {
-          if (event.key === 'ArrowUp') {
+          if (event.key === ' ') {
                stop()    
       }
       });
     slider.addEventListener('input', updateCurrentValue);
     document.addEventListener('keydown', function(event) {
-      if (event.key === 'ArrowRight') {
+      if (event.key === 'f') {
              full()
       }
       });
